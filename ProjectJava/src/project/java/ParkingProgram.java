@@ -1,6 +1,7 @@
 package project.java;
 
 import java.awt.BorderLayout;
+import java.awt.CheckboxGroup;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,28 +11,32 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 import javax.swing.JScrollBar;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Component;
 import java.awt.Insets;
+import javax.swing.JComboBox;
 
 public class ParkingProgram extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField txtNo;
-	private JTextField textcheckout;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField textUsertime;
+	private JTextField textNo;
+	private JTextField textID;
+	private JTextField textSearch;
+	private JTextField textLicense;
 
 	/**
 	 * Launch the application.
@@ -42,6 +47,7 @@ public class ParkingProgram extends JFrame {
 				try {
 					ParkingProgram frame = new ParkingProgram();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,8 +58,13 @@ public class ParkingProgram extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ParkingProgram() {
+	 ParkingProgram() {
+		
+		Time time = new Time();
+	
+		
 		setResizable(false);
+		setTitle("Parking Program");
 		setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 5, 1080, 760);
@@ -70,16 +81,16 @@ public class ParkingProgram extends JFrame {
 		lblFghgfhfh.setBounds(361, 10, 410, 71);
 		contentPane.add(lblFghgfhfh);
 		
-		txtNo = new JTextField();
-		txtNo.setMargin(new Insets(2, 5, 2, 2));
-		txtNo.setEditable(false);
-		txtNo.setHorizontalAlignment(SwingConstants.LEFT);
-		txtNo.setForeground(new Color(0, 0, 0));
-		txtNo.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		txtNo.setText("xxxxx");
-		txtNo.setBounds(890, 84, 96, 37);
-		contentPane.add(txtNo);
-		txtNo.setColumns(10);
+		textNo = new JTextField();
+		textNo.setMargin(new Insets(2, 5, 2, 2));
+		textNo.setEditable(false);
+		textNo.setHorizontalAlignment(SwingConstants.LEFT);
+		textNo.setForeground(new Color(0, 0, 0));
+		textNo.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		textNo.setText("xxxxx");
+		textNo.setBounds(890, 84, 96, 37);
+		contentPane.add(textNo);
+		textNo.setColumns(10);
 		
 		JLabel lblNo = new JLabel("No :");
 		lblNo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -98,97 +109,138 @@ public class ParkingProgram extends JFrame {
 		contentPane.add(textPane);
 		
 		JPanel checkIn = new JPanel();
-		checkIn.setBounds(40, 119, 587, 287);
+		checkIn.setBounds(40, 108, 587, 287);
 		contentPane.add(checkIn);
 		checkIn.setLayout(null);
 		
-		JRadioButton rdbtnRealTime = new JRadioButton("Real time");
-		rdbtnRealTime.setBounds(36, 20, 103, 21);
-		checkIn.add(rdbtnRealTime);
-		rdbtnRealTime.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		rdbtnRealTime.setForeground(new Color(0, 0, 0));
-		rdbtnRealTime.setBackground(Color.WHITE);
+		// radio real time
+		JRadioButton rRealTime = new JRadioButton("Real time");
+		rRealTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textUsertime.setEnabled(false);	
+				time.setChooseTime(1);
+				System.out.println(time.getChooseTime());
+			}
+		});
+		rRealTime.setBounds(22, 20, 103, 21);
+		checkIn.add(rRealTime);
+		rRealTime.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		rRealTime.setForeground(new Color(0, 0, 0));
+		rRealTime.setBackground(Color.WHITE);
+		rRealTime.setSelected(true);
 		
-		JRadioButton radioButton = new JRadioButton("Real time");
-		radioButton.setBounds(36, 58, 103, 21);
-		checkIn.add(radioButton);
-		radioButton.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		radioButton.setForeground(new Color(0, 0, 0));
-		radioButton.setBackground(Color.WHITE);
+		
+		// radio user time
+		JRadioButton rUsertime = new JRadioButton("User time :");
+		rUsertime.addActionListener(new ActionListener() {
+	
+			public void actionPerformed(ActionEvent arg0) {
+				textUsertime.setEnabled(true);
+				time.setChooseTime(2);
+				System.out.println(time.getChooseTime());
+				}
+		});
+		rUsertime.setBounds(22, 58, 117, 21);
+		checkIn.add(rUsertime);
+		rUsertime.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		rUsertime.setForeground(new Color(0, 0, 0));
+		rUsertime.setBackground(Color.WHITE);
+		rUsertime.setSelected(false);
+		
+		
+		
+		
+		
+		
+		// set groub radio
+		ButtonGroup groub = new ButtonGroup();
+		groub.add(rUsertime);
+		groub.add(rRealTime);
+		
+		
 		
 		JLabel lblId = new JLabel("ID :");
-		lblId.setBounds(102, 167, 45, 30);
+		lblId.setBounds(99, 145, 45, 30);
 		checkIn.add(lblId);
 		lblId.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
 		
 		JLabel lblLicensePlate = new JLabel("License Plate :");
-		lblLicensePlate.setBounds(25, 208, 113, 29);
+		lblLicensePlate.setBounds(22, 186, 113, 29);
 		checkIn.add(lblLicensePlate);
 		lblLicensePlate.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
 		
-		JButton btnOk = new JButton("OK");
-		btnOk.setMargin(new Insets(2, 14, 6, 14));
-		btnOk.setBounds(381, 247, 85, 30);
-		checkIn.add(btnOk);
-		btnOk.setForeground(new Color(0, 0, 0));
-		btnOk.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
+		JButton bOk = new JButton("OK");
+		bOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				
+				JOptionPane.showMessageDialog(null, "susseed full , thank you.\n"+time.getToday()+"");
+			
+			}
+		});
+		bOk.setMargin(new Insets(2, 14, 6, 14));
+		bOk.setBounds(451, 234, 85, 30);
+		checkIn.add(bOk);
+		bOk.setForeground(new Color(0, 0, 0));
+		bOk.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(158, 102, 185, 30);
-		checkIn.add(textField_1);
-		textField_1.setMargin(new Insets(2, 4, 3, 2));
-		textField_1.setForeground(Color.BLACK);
-		textField_1.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		textField_1.setColumns(10);
+		textID = new JTextField();
+		textID.setBounds(154, 143, 185, 35);
+		checkIn.add(textID);
+		textID.setMargin(new Insets(1, 4, 3, 2));
+		textID.setForeground(Color.BLACK);
+		textID.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		textID.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(157, 167, 185, 30);
-		checkIn.add(textField_2);
-		textField_2.setMargin(new Insets(2, 4, 3, 2));
-		textField_2.setForeground(Color.BLACK);
-		textField_2.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		textField_2.setColumns(10);
-		
-		textField = new JTextField();
-		textField.setBounds(158, 53, 185, 30);
-		checkIn.add(textField);
-		textField.setMargin(new Insets(2, 4, 3, 2));
-		textField.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		textField.setForeground(new Color(0, 0, 0));
-		textField.setColumns(10);
+		textUsertime = new JTextField();
+		textUsertime.setBounds(154, 51, 185, 35);
+		checkIn.add(textUsertime);
+		textUsertime.setMargin(new Insets(1, 4, 3, 2));
+		textUsertime.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		textUsertime.setForeground(new Color(0, 0, 0));
+		textUsertime.setColumns(10);
+		textUsertime.setEnabled(false);
 		
 		JLabel lblCheckIn = new JLabel("Check in");
-		lblCheckIn.setBounds(36, 133, 78, 24);
+		lblCheckIn.setBounds(33, 111, 78, 24);
 		checkIn.add(lblCheckIn);
 		lblCheckIn.setForeground(Color.RED);
 		lblCheckIn.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCheckIn.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
 		
-		textField_4 = new JTextField();
-		textField_4.setMargin(new Insets(2, 4, 3, 2));
-		textField_4.setForeground(Color.BLACK);
-		textField_4.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		textField_4.setColumns(10);
-		textField_4.setBounds(157, 207, 185, 30);
-		checkIn.add(textField_4);
+		textLicense = new JTextField();
+		textLicense.setMargin(new Insets(1, 4, 3, 2));
+		textLicense.setForeground(Color.BLACK);
+		textLicense.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		textLicense.setColumns(10);
+		textLicense.setBounds(154, 183, 185, 35);
+		checkIn.add(textLicense);
+		
+		JButton bClear = new JButton("CLEAR");
+		bClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textUsertime.setText(null);
+				textID.setText(null);
+				textLicense.setText(null);
+			}
+		});
+		bClear.setMargin(new Insets(2, 14, 6, 14));
+		bClear.setForeground(Color.BLACK);
+		bClear.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
+		bClear.setBounds(302, 234, 106, 30);
+		checkIn.add(bClear);
 		
 		JPanel CheckOut = new JPanel();
 		CheckOut.setBounds(40, 416, 587, 295);
 		contentPane.add(CheckOut);
 		CheckOut.setLayout(null);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(116, 71, 185, 30);
-		CheckOut.add(textField_3);
-		textField_3.setMargin(new Insets(2, 4, 3, 2));
-		textField_3.setForeground(Color.BLACK);
-		textField_3.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
-		textField_3.setColumns(10);
-		
-		textcheckout = new JTextField();
-		textcheckout.setBounds(33, 121, 528, 112);
-		CheckOut.add(textcheckout);
-		textcheckout.setColumns(10);
+		textSearch = new JTextField();
+		textSearch.setBounds(116, 71, 185, 35);
+		CheckOut.add(textSearch);
+		textSearch.setMargin(new Insets(1, 4, 3, 2));
+		textSearch.setForeground(Color.BLACK);
+		textSearch.setFont(new Font("AngsanaUPC", Font.PLAIN, 30));
+		textSearch.setColumns(10);
 		
 		JButton bsearch = new JButton("Search");
 		bsearch.setMargin(new Insets(1, 14, 6, 14));
@@ -207,5 +259,17 @@ public class ParkingProgram extends JFrame {
 		Search.setBounds(45, 66, 103, 30);
 		CheckOut.add(Search);
 		Search.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
+		
+		JButton bChevkOut = new JButton("Check out");
+		bChevkOut.setMargin(new Insets(1, 14, 6, 14));
+		bChevkOut.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
+		bChevkOut.setBounds(444, 260, 117, 30);
+		CheckOut.add(bChevkOut);
+		
+		JTextPane textPane_1 = new JTextPane();
+		textPane_1.setMargin(new Insets(3, 6, 3, 3));
+		textPane_1.setFont(new Font("AngsanaUPC", Font.PLAIN, 28));
+		textPane_1.setBounds(33, 116, 528, 135);
+		CheckOut.add(textPane_1);
 	}
 }
